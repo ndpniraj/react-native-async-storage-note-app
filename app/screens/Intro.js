@@ -11,13 +11,14 @@ import {
 import RoundIconBtn from '../components/RoundIconBtn';
 import colors from '../misc/colors';
 
-const Intro = () => {
+const Intro = ({ onFinish }) => {
   const [name, setName] = useState('');
   const handleOnChangeText = text => setName(text);
 
   const handleSubmit = async () => {
     const user = { name: name };
     await AsyncStorage.setItem('user', JSON.stringify(user));
+    if (onFinish) onFinish();
   };
 
   return (
