@@ -17,6 +17,16 @@ import SearchBar from '../components/SearchBar';
 import { useNotes } from '../contexts/NoteProvider';
 import colors from '../misc/colors';
 
+const reverseData = data => {
+  return data.sort((a, b) => {
+    const aInt = parseInt(a.time);
+    const bInt = parseInt(b.time);
+    if (aInt < bInt) return 1;
+    if (aInt == bInt) return 0;
+    if (aInt > bInt) return -1;
+  });
+};
+
 const NoteScreen = ({ user, navigation }) => {
   const [greet, setGreet] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -35,6 +45,8 @@ const NoteScreen = ({ user, navigation }) => {
   useEffect(() => {
     findGreet();
   }, []);
+
+  const reverseNotes = reverseData(notes);
 
   const handleOnSubmit = async (title, desc) => {
     const note = { id: Date.now(), title, desc, time: Date.now() };
@@ -92,7 +104,7 @@ const NoteScreen = ({ user, navigation }) => {
             <NotFound />
           ) : (
             <FlatList
-              data={notes}
+              data={reverseNotes}
               numColumns={2}
               columnWrapperStyle={{
                 justifyContent: 'space-between',
